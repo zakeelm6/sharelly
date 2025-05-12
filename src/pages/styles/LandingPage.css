@@ -1,0 +1,345 @@
+/* General body styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Disable native scroll */
+  color: #333;
+}
+
+/* Section styles for full-screen snap scrolling */
+.section {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 1s ease-in-out;
+}
+
+.page1, .page2, .page3, .page4, .page5 {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.header1 {
+  width: 100%;
+  height: 80px; /* or whatever you want */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 0px; /* some spacing left and right */
+  box-sizing: border-box;
+}
+
+.logo-top-left {
+  width: 50px;
+}
+
+.left-logo-name {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.left-nameee {
+  background: linear-gradient(to right,
+  #E0D451,  /* Start color 1 */
+  #30ED36,  /* Start color 2 */
+  #fcec32,  /* Hover color 1 */
+  #05f00d   /* Hover color 2 */
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  transition: background-position 3s ease;
+}
+
+.left-nameee:hover {
+  background-position: 100% 0;  /* Shift gradient to the right */
+}
+
+.right-buttons {
+  display: flex;
+  gap: 12px; /* spacing between Sign In and Sign Up */
+}
+
+
+.top-right-button {
+  padding: 8px 16px 6px;
+  color: #BCBCBC;
+  border: 1px solid #BCBCBC;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  transition: all 0.5s ease;
+}
+
+.top-right-button:hover {
+  transform: scale(1.2); /* smooth growth */
+}
+
+
+.intro {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 50px 0px;
+}
+
+.intro-left {
+  max-width: 40%;
+  text-align: left;
+}
+
+.intro-text {
+  font-size: 50px;
+  line-height: 0.8;
+  letter-spacing: 0px;
+  font-weight: 600 ;
+  color: white;
+}
+
+.welcome {
+  color: rgb(255, 255, 255);
+}
+
+.highlight {
+  background: linear-gradient(to right,
+  #E0D451,  /* Start color 1 */
+  #30ED36,  /* Start color 2 */
+  #fcec32,  /* Hover color 1 */
+  #05f00d   /* Hover color 2 */
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 100px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  transition: background-position 3s ease;
+}
+
+.highlight:hover {
+  background-position: 100% 0;  /* Shift gradient to the right */
+}
+
+.sharing {
+  font-size: 27px;
+  color: #E2E2E2;
+  line-height: 0.2;
+  font-family: 'Poppins', sans-serif;
+  font-weight: lighter;
+}
+
+.intro-buttons {
+  margin-top: 20px;
+  margin-left: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.buttons {
+  padding: 12px 35px;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  background: linear-gradient(to right,
+  #E0D451,  /* Start color 1 */
+  #30ED36,  /* Start color 2 */
+  #fcec32,  /* Hover color 1 */
+  #05f00d   /* Hover color 2 */
+  );
+  background-size: 300% 100%;
+  transition: all 1.2s ease;
+}
+
+.buttons:hover {
+  transform: scale(1.2); /* smooth growth */
+  background-position: 100% 0;  /* Shift gradient to the right */
+}
+
+.intro-logo img {
+  width: 250px;
+  height: auto;
+}
+
+
+.header2 {
+  color: white;
+  display: block;
+  padding: 10px 50px;
+}
+
+#whychoose, #howitworks {
+  font-size: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+#weoffer, #uploadyour {
+  color: #E2E2E2;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+.icons2 {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.icons2 img {
+  height: 50px;
+  background-color: #70B4D8;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 2px -2px 5px rgba(255, 255, 255, 0.3);
+  transition: all 1s ease;
+}
+
+.icons2 p, .icons3 p {
+  color: rgb(255, 255, 255);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+.icons2 img:hover {
+  transform: scale(1.4);
+}
+
+.icons3 {
+  display: flex;
+  justify-content: center;
+  gap: 150px;
+}
+
+.icons3 img {
+  height: 50px;
+  background-color: #70B4D8;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 2px -2px 5px rgba(255, 255, 255, 0.3);
+  transition: all 1s ease;
+}
+
+.icons3 img:hover {
+  transform: scale(1.4);
+}
+
+.icons4 {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+#createaccbutton {
+  padding: 20px;
+}
+
+
+.whole-block {
+  display: flex;
+  text-align: left;
+  margin-right: 40px;
+  margin-left: 40px;
+  margin-top: 50px;
+  border-bottom: 2px solid #D7D7D7;
+  margin-bottom: 8px;
+}
+
+.header5 {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  gap: 30px;
+}
+
+.header5 p {
+  color: #D7D7D7;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 25px;
+}
+
+.header5 h3 {
+  color: white;
+  font-size: 28px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+  margin-top: 0px;
+}
+
+.description-left {
+  color: white;
+  font-size: 30px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 3px;
+  padding-right: 80px;
+}
+
+.footer5 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.socials-icons {
+  display: flex;
+  gap: 18px;
+}
+
+.socials-icons img {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.socials-icons img:hover {
+  transform: scale(1.2);
+}
+
+.copyright-info {
+  color: #444444;
+  line-height: 0;
+}
+
+.section-content {
+  max-width: 800px;
+}
+
+/* Scroll smoothing and hiding native scrollbar */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+section::-webkit-scrollbar {
+  display: none;
+}
