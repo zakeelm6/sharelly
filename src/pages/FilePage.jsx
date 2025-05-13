@@ -9,9 +9,9 @@ const FilePage = () => {
   const navigate = useNavigate();
 
   const [files, setFiles] = useState([
-    { name: 'Document 1', type: 'document', isOwner: true, permission: 'edit', tags: [] },
-    { name: 'Photo 1', type: 'image', isOwner: false, permission: 'view', tags: [] },
-    { name: 'Video 1', type: 'video', isOwner: false, permission: 'edit', tags: [] },
+    { id: 1, name: 'Document 1', type: 'document', isOwner: true, permission: 'edit', tags: [] },
+    { id: 2, name: 'Photo 1', type: 'image', isOwner: false, permission: 'view', tags: [] },
+    { id: 3, name: 'Video 1', type: 'video', isOwner: false, permission: 'edit', tags: [] },
   ]);
 
   const [tags, setTags] = useState([]);
@@ -25,15 +25,50 @@ const FilePage = () => {
   const [pinnedDrives, setPinnedDrives] = useState([]);
   const [showDriveList, setShowDriveList] = useState(false);
 
-  const handleDownload = (file) => console.log(`Downloading ${file.name}`);
-  const handleEdit = (file) => console.log(`Editing ${file.name}`);
+  const [driveName, setDriveName] = useState('');
+  const [password, setPassword] = useState('');
+  const [emails, setEmails] = useState('');
+  const [permission, setPermission] = useState('edit');
+  const [tagName, setTagName] = useState('');
+  const [tagColor, setTagColor] = useState('#ff0000');
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const handleUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const newFile = { name: file.name, type: 'other', isOwner: true, permission: 'edit', tags: [] };
-      setFiles([...files, newFile]);
+      setUploadedFile(file);
     }
+  };
+
+  const handleCreateDrive = () => {
+    if (!driveName || !password || !uploadedFile || !tagName) {
+      alert("Veuillez remplir tous les champs et sélectionner un fichier.");
+      return;
+    }
+
+    const tag = { name: tagName.trim(), color: tagColor };
+
+    const newDrive = {
+      id: Date.now(),
+      name: driveName,
+      type: 'other',
+      isOwner: true,
+      permission,
+      tags: [tag],
+      downloadUrl: URL.createObjectURL(uploadedFile),
+    };
+
+    setFiles([...files, newDrive]);
+    setTags([...tags, tag]);
+
+    setDriveName('');
+    setPassword('');
+    setEmails('');
+    setPermission('edit');
+    setTagName('');
+    setTagColor('#ff0000');
+    setUploadedFile(null);
+    setShowCreateDrive(false);
   };
 
   const handleAddTag = () => {
@@ -43,43 +78,83 @@ const FilePage = () => {
     setNewTagName('');
   };
 
-  const addTagToFile = (fileIndex, tag) => {
-    const updatedFiles = [...files];
-    const currentFile = updatedFiles[fileIndex];
-    if (!currentFile.tags.some(t => t.name === tag.name)) {
-      currentFile.tags.push(tag);
-      setFiles(updatedFiles);
-    }
-  };
-
-  const removeTagFromFile = (fileIndex, tagName) => {
-    const updatedFiles = [...files];
-    updatedFiles[fileIndex].tags = updatedFiles[fileIndex].tags.filter(tag => tag.name !== tagName);
-    setFiles(updatedFiles);
-  };
-
   const removeFile = (indexToRemove) => {
     const updatedFiles = files.filter((_, index) => index !== indexToRemove);
     setFiles(updatedFiles);
   };
 
+  const handleDownload = (file) => {
+    const link = document.createElement('a');
+    link.href = file.downloadUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleEdit = (file) => {
+    navigate(`/edit/${file.id}`);
+  };
+
   const renderCreateDriveModal = () => (
     <div className="modal-overlay">
       <div className="modal">
-        <h3>Créer un nouveau Drive</h3>
-        <input type="text" placeholder="Nom du Drive" className="input-field" />
-        <input type="password" placeholder="Mot de passe" className="input-field" />
-        <textarea placeholder="Emails des utilisateurs" className="input-field" />
-        <select className="input-field">
+        <h3>Créer un Drive</h3>
+
+        <input
+          type="text"
+          placeholder="Nom du Drive"
+          className="input-field"
+          value={driveName}
+          onChange={(e) => setDriveName(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          className="input-field"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <textarea
+          placeholder="Emails des utilisateurs"
+          className="input-field"
+          value={emails}
+          onChange={(e) => setEmails(e.target.value)}
+        />
+        <select
+          className="input-field"
+          value={permission}
+          onChange={(e) => setPermission(e.target.value)}
+        >
           <option value="edit">Peut éditer</option>
           <option value="view">Juste voir</option>
         </select>
-        <label className="input-label" style={{ marginTop: '10px' }}>
+        <input
+          type="text"
+          placeholder="Nom du tag"
+          className="input-field"
+          value={tagName}
+          onChange={(e) => setTagName(e.target.value)}
+        />
+        <label className="input-label">
+          Couleur du tag :
+          <input
+            type="color"
+            value={tagColor}
+            onChange={(e) => setTagColor(e.target.value)}
+            style={{ marginLeft: '10px' }}
+          />
+        </label>
+        <label className="input-label">
           Ajouter un fichier :
-          <input type="file" className="input-field" onChange={handleUpload} />
+          <input
+            type="file"
+            className="input-field"
+            onChange={handleUpload}
+          />
         </label>
         <div style={{ marginTop: '10px' }}>
-          <button className="btn btn-green">Créer</button>
+          <button className="btn btn-green" onClick={handleCreateDrive}>Créer</button>
           <button className="btn btn-gray" onClick={() => setShowCreateDrive(false)}>Annuler</button>
         </div>
       </div>
@@ -99,7 +174,7 @@ const FilePage = () => {
               <div key={index} className="file-item">
                 <h5>{file.name}</h5>
                 <p>Permission : {file.permission}</p>
-                <p>{file.isOwner ? 'Vous êtes le propriétaire' : "Propriétaire : Autre utilisateur"}</p>
+                <p>{file.isOwner ? 'Vous êtes le propriétaire' : 'Propriétaire : Autre utilisateur'}</p>
                 <div style={{ marginTop: '10px' }}>
                   <button onClick={() => removeFile(index)}>Supprimer</button>
                   <button onClick={() => handleEdit(file)}>Renommer</button>
@@ -122,57 +197,51 @@ const FilePage = () => {
     if (activeSection01 === 'myDrive') {
       return (
         <>
+                  
           <div className="top-bar">
+            <p class="styled-text">My Drive</p>
             <div className="button-right-container">
-              <button className="btn btn-blue" onClick={() => setShowCreateDrive(true)}>Create Drive</button>
+              <button className="btn btn-blue" onClick={() => setShowCreateDrive(true)}>
+                Créer un Drive
+              </button>
             </div>
           </div>
+
           <div className="file-bar-container">
-            {files.map((file, index) => (
-              <div key={index} className="file-bar">
-                <h4>{file.name}</h4>
-                <p>Permission: {file.permission}</p>
-                <div>
-                  {file.tags.map((tag, i) => (
-                    <span key={i} style={{ backgroundColor: tag.color }} className="tag">
-                      {tag.name}
-                      <button onClick={() => removeTagFromFile(index, tag.name)}>x</button>
-                    </span>
-                  ))}
+            {files.map((file, index) => {
+              const tagColor = file.tags.length > 0 ? file.tags[0].color : '#ffffff';
+
+              return (
+                <div key={index} className="folder" style={{ backgroundColor: tagColor }}>
+                  <div className="folder-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64" fill="#555">
+                      <path d="M10 4H2v16h20V6H12l-2-2z" />
+                    </svg>
+                  </div>
+                  <div className="folder-name">{file.name}</div>
+                  <div className="folder-buttons">
+                    <button onClick={() => handleDownload(file)}>Télécharger</button>
+                    {file.permission === 'edit' && (
+                      <button onClick={() => handleEdit(file)}>Modifier</button>
+                    )}
+                  </div>
                 </div>
-                <select
-                  onChange={(e) => {
-                    const selectedTag = tags.find(tag => tag.name === e.target.value);
-                    if (selectedTag) addTagToFile(index, selectedTag);
-                  }}
-                  defaultValue=""
-                >
-                  <option value="" disabled>Ajouter un tag</option>
-                  {tags.map((tag, i) => (
-                    <option key={i} value={tag.name}>{tag.name}</option>
-                  ))}
-                </select>
-                <div style={{ marginTop: '10px' }}>
-                  <button onClick={() => handleDownload(file)}>Download</button>
-                  {file.permission === 'edit' && (
-                    <button onClick={() => handleEdit(file)}>Edit</button>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
+        
       );
     }
 
     const section01Titles = {
-      computer: "Computer Section01",
-      shared: "Shared With Me",
-      recents: "Recents",
-      trash: "Trash",
+      computer: "Section Ordinateur",
+      shared: "Partagés avec moi",
+      recents: "Récents",
+      trash: "Corbeille",
     };
 
-    return <h2>{section01Titles[activeSection01] || "Welcome to Sharely"}</h2>;
+    return <h2>{section01Titles[activeSection01] || "Bienvenue dans Sharely"}</h2>;
   };
 
   const filteredFiles = files.filter((file) => {
@@ -198,8 +267,8 @@ const FilePage = () => {
                     className={`menu-btn ${activeSection01 === section01 ? 'active' : ''}`}
                     onClick={() => setActiveSection01(section01)}
                   >
-                    {section01 === 'myDrive' ? 'My Drive' :
-                      section01 === 'computer' ? 'Computer' : 'Shared with me'}
+                    {section01 === 'myDrive' ? 'Mon Drive' :
+                      section01 === 'computer' ? 'Ordinateur' : 'Partagés'}
                   </button>
                 </li>
               ))}
@@ -207,17 +276,8 @@ const FilePage = () => {
           </div>
           <div className="section0101">
             <h4>Tags</h4>
-            <input
-              type="text"
-              placeholder="Nom du tag"
-              value={newTagName}
-              onChange={(e) => setNewTagName(e.target.value)}
-            />
-            <input
-              type="color"
-              value={newTagColor}
-              onChange={(e) => setNewTagColor(e.target.value)}
-            />
+            <input type="text" placeholder="Nom du tag" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} />
+            <input type="color" value={newTagColor} onChange={(e) => setNewTagColor(e.target.value)} />
             <button onClick={handleAddTag} className="menu-btn">Ajouter le tag</button>
             <ul className="menu-list">
               {tags.map((tag, index) => (
@@ -228,7 +288,7 @@ const FilePage = () => {
             </ul>
           </div>
           <div className="section01">
-            <h4>More</h4>
+            <h4>Plus</h4>
             <ul className="menu-list">
               {['recents', 'trash'].map((section01) => (
                 <li key={section01}>
@@ -243,29 +303,14 @@ const FilePage = () => {
             </ul>
           </div>
           <div className="section01">
-            <h4>Storage</h4>
+            <h4>Stockage</h4>
             <div className="storage-bar">
-              <div
-                className="used"
-                style={{ width: `${(usedStorage / totalStorage) * 100}%` }}
-              ></div>
+              <div className="used" style={{ width: `${(usedStorage / totalStorage) * 100}%` }}></div>
             </div>
-            <div className="storage-text">{usedStorage} GB used of {totalStorage} GB</div>
-            <div className="storage-text">{freeStorage} GB free</div>
-            <button
-              className="menu-btn"
-              style={{ backgroundColor: '#007bff', color: 'white' }}
-              onClick={() => setIsStoragePage(true)}
-            >
-              Voir mon stockage
-            </button>
-            <button
-              className="menu-btn"
-              style={{ backgroundColor: 'red', color: 'white' }}
-              onClick={() => setShowConfirmDelete(true)}
-            >
-              Supprimer tous les fichiers
-            </button>
+            <div className="storage-text">{usedStorage} GB utilisés sur {totalStorage} GB</div>
+            <div className="storage-text">{freeStorage} GB libres</div>
+            <button className="menu-btn" style={{ backgroundColor: '#007bff', color: 'white' }} onClick={() => setIsStoragePage(true)}>Voir mon stockage</button>
+            <button className="menu-btn" style={{ backgroundColor: 'red', color: 'white' }} onClick={() => setShowConfirmDelete(true)}>Supprimer tous les fichiers</button>
           </div>
 
           {showConfirmDelete && (
@@ -273,19 +318,9 @@ const FilePage = () => {
               <div className="modal">
                 <h3>Confirmation</h3>
                 <p>Es-tu sûr de vouloir supprimer tous les fichiers ?</p>
-                <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button style={{ marginRight: '10px' }} onClick={() => setShowConfirmDelete(false)}>
-                    Annuler
-                  </button>
-                  <button
-                    style={{ backgroundColor: 'red', color: 'white' }}
-                    onClick={() => {
-                      setFiles([]);
-                      setShowConfirmDelete(false);
-                    }}
-                  >
-                    Supprimer
-                  </button>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <button style={{ marginRight: '10px' }} onClick={() => setShowConfirmDelete(false)}>Annuler</button>
+                  <button style={{ backgroundColor: 'red', color: 'white' }} onClick={() => { setFiles([]); setShowConfirmDelete(false); }}>Supprimer</button>
                 </div>
               </div>
             </div>
@@ -294,8 +329,7 @@ const FilePage = () => {
       </div>
 
       <div className="centre">
-        <h1>My Sharely</h1>
-        <h2>My Drive</h2>
+        <h1 class='share'>My Sharely</h1>
         {renderContent()}
         {showCreateDrive && renderCreateDriveModal()}
       </div>
@@ -304,13 +338,12 @@ const FilePage = () => {
         <div className="user-info">
           <img src="/user-placeholder.jpg" alt="User" className="user-avatar" />
           <div className="user-details">
-            <div className="user-greeting">Hi, <strong>John Doe</strong></div>
-            <button className="profile-btn" onClick={() => navigate('/EditProfileForm')}>Profile Settings</button>
+            <div className="user-greeting">Bonjour, <strong>John Doe</strong></div>
+            <button className="profile-btn" onClick={() => navigate('/EditProfileForm')}>Profil</button>
           </div>
         </div>
-
         <div className="file-section01">
-          <h4>My Files</h4>
+          <h4>Mes Fichiers</h4>
           <div className="file-tabs">
             {['Photos', 'Documents', 'Others'].map((category) => (
               <button
@@ -318,7 +351,7 @@ const FilePage = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`file-tab ${selectedCategory === category ? 'active' : ''}`}
               >
-                {category === 'Photos' ? 'Photos & Videos' : category}
+                {category === 'Photos' ? 'Photos & Vidéos' : category}
               </button>
             ))}
           </div>
@@ -334,31 +367,24 @@ const FilePage = () => {
         </div>
 
         <div className="pinned-section01">
-          <h4>Pinned Drives</h4>
+          <h4>Drives épinglés</h4>
           <ul className="pinned-list">
             {pinnedDrives.map((file, i) => (
               <li key={i}>📌 {file.name}</li>
             ))}
           </ul>
-          <button className="add-pinned-btn" onClick={() => setShowDriveList(!showDriveList)}>
-            + Add Drive
-          </button>
+          <button className="add-pinned-btn" onClick={() => setShowDriveList(!showDriveList)}>+ Ajouter un Drive</button>
           {showDriveList && (
             <ul className="drive-list">
               {files.map((file, index) => (
                 <li key={index} className="drive-item">
                   {file.name}
-                  <button
-                    className="pin-btn"
-                    onClick={() => {
-                      if (!pinnedDrives.some(d => d.name === file.name)) {
-                        setPinnedDrives([...pinnedDrives, file]);
-                      }
-                      setShowDriveList(false);
-                    }}
-                  >
-                    📌
-                  </button>
+                  <button className="pin-btn" onClick={() => {
+                    if (!pinnedDrives.some(d => d.name === file.name)) {
+                      setPinnedDrives([...pinnedDrives, file]);
+                    }
+                    setShowDriveList(false);
+                  }}>📌</button>
                 </li>
               ))}
             </ul>
@@ -370,5 +396,3 @@ const FilePage = () => {
 };
 
 export default FilePage;
-
-

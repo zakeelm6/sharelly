@@ -16,7 +16,6 @@
   flex-direction: row;
   min-height: 100vh;
   width: 100vw;
-  background-color: #E6E6E6; /* ← ici */
 }
 /* Barre gauche */
 .left {
@@ -48,14 +47,24 @@
 .centre {
   width: 60%;
   padding: 20px;
-
+  color: rgba(230, 230, 230, 1);
+}
+.share {
+  color: black ;
+}
+.styled-text {
+   font-size: 18px; /* Taille du texte */
+  font-family: Arial, sans-serif; /* Police du texte */
+  font-weight: bold; /* Mettre le texte en gras */
+  margin-top: 20px; /* Marge au-dessus du texte */
+  color: black;
 }
 
 /* Barre droite */
 .right {
   width: 300px;
   padding: 20px;
-  background-color: #E6E6E6; /* ← couleur modifiée ici */
+  background-color: #f4f7fa; /* ← couleur modifiée ici */
   border-left: 1px solid #ddd;
   height: 100vh;
   overflow-y: auto;
@@ -71,25 +80,22 @@
 }
 
 .menu-btn {
-  width: 100%;
-  padding: 10px 16px;
-  background-color: transparent;
+  background-color: white;
+  color: black;
   border: none;
+  padding: 10px 15px;
+  width: 100%;
   text-align: left;
-  font-size: 16px;
-  color: white; /* ← texte blanc par défaut */
   cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s;
+  font-weight: 500;
 }
 
-.menu-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* ← survol léger */
-  color: #fff; /* ← garde le texte blanc au hover */
-}
+.menu-btn:hover,
 .menu-btn.active {
   background: linear-gradient(to right, #E0D451, #30ED36, #fcec32, #05f00d);
-  color: black; /* ← pour meilleur contraste sur le fond flashy */
+  color: black;
+  font-weight: bold;
 }
 
 /* Section Storage */
@@ -138,9 +144,9 @@ button.menu-btn {
   align-items: center;
   z-index: 1000;
   animation: fadeInOverlay 0.3s ease-out;
-  }
-  
-  .modal {
+}
+
+.modal {
   background-color: rgba(65, 199, 255, 1);
   padding: 30px;
   border-radius: 15px;
@@ -152,269 +158,316 @@ button.menu-btn {
   transform: translateY(-20px);
   opacity: 0;
   animation: slideFadeIn 0.4s ease-out forwards;
-  }
-  
-  @keyframes fadeInOverlay {
+}
+
+@keyframes fadeInOverlay {
   from {
-  background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
   }
   to {
-  background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
   }
-  }
-  
-  @keyframes slideFadeIn {
+}
+
+@keyframes slideFadeIn {
   from {
-  transform: translateY(-20px);
-  opacity: 0;
+    transform: translateY(-20px);
+    opacity: 0;
   }
   to {
-  transform: translateY(0);
-  opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
   }
-  }
-  
-  .input-field {
+}
+
+.input-field {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 6px;
   border: none;
   font-size: 14px;
-  }
-  
-  .button-right-container {
+}
+
+.button-right-container {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
-  }
-  
-  .btn {
+}
+
+.btn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  }
-  
-  .btn-blue {
+}
+
+.btn-blue {
   background-color: #007bff;
   color: white;
-  }
-  
-  .btn-blue:hover {
-  background: linear-gradient(to right, #E0D451, #30ED36, #fcec32, #05f00d);
-  }
-  .right {
-    width: 300px;
-    padding: 20px;
-    background-color: #f4f7fa;
-    border-left: 1px solid #ddd;
-    height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  /* User Info */
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .user-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .user-details {
-    flex: 1;
-  }
-  
-  .user-greeting {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .profile-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    border: none;
-    background-color: #41c7ff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .profile-btn:hover {
-    background-color: #1aa3dd;
-  }
-  
-  /* File Section */
-  .file-section h4,
-  .pinned-section h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .file-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .file-tabs button {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  
-  .file-tabs .active {
-    background-color: #41c7ff;
-    color: white;
-    border-color: #41c7ff;
-  }
-  
-  .file-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .file-thumb {
-    padding: 6px 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  
-  .file-thumb:hover {
-    background-color: #e0f7ff;
-  }
-  
-  /* Pinned Drives */
-  .pinned-section ul {
-    padding-left: 15px;
-    list-style-type: none;
-    margin: 0;
-  }
-  
-  .pinned-section li {
-    padding: 6px 0;
-    font-size: 14px;
-  }
-  
-  .add-pinned-btn {
-    margin-top: 10px;
-    padding: 6px 10px;
-    font-size: 13px;
-    border: none;
-    background-color: #41c7ff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .add-pinned-btn:hover {
-    background-color: #1aa3dd;
-  }
-  
-  /* Optional: drive list when adding pinned drives */
-  .drive-list {
-    margin-top: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .drive-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    font-size: 13px;
-  }
-  
-  .drive-list button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
+}
 
-    .file-bar-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 10px 0;
-    }
-    
-    .file-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #eef6fa;
-      padding: 12px 20px;
-      border-radius: 8px;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .file-bar:hover {
-      background-color: #d3efff;
-    }
-    
-    .file-bar h4 {
-      margin: 0;
-      font-size: 16px;
-      flex: 2;
-    }
-    
-    .file-bar p {
-      margin: 0 10px;
-      font-size: 14px;
-      flex: 1;
-    }
-    
-    .file-bar .tag {
-      margin-right: 8px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      color: white;
-    }
-    
-    .file-bar select {
-      margin-left: 10px;
-    }
-    
-    .file-bar button {
-      margin-left: 8px;
-      padding: 4px 8px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-    
-    .file-bar button:hover {
-      background-color: #0056b3;
-    }
-    
+.btn-blue:hover {
+  background: linear-gradient(to right, #E0D451, #30ED36, #fcec32, #05f00d);
+}
+
+.right {
+  width: 300px;
+  padding: 20px;
+  background-color: #f4f7fa;
+  border-left: 1px solid #ddd;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-greeting {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.profile-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: none;
+  background-color: #41c7ff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #1aa3dd;
+}
+
+/* File Section */
+.file-section h4,
+.pinned-section h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.file-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.file-tabs button {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.file-tabs .active {
+  background-color: #41c7ff;
+  color: white;
+  border-color: #41c7ff;
+}
+
+.file-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-thumb {
+  padding: 6px 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.file-thumb:hover {
+  background-color: #e0f7ff;
+}
+
+/* Pinned Drives */
+.pinned-section ul {
+  padding-left: 15px;
+  list-style-type: none;
+  margin: 0;
+}
+
+.pinned-section li {
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.add-pinned-btn {
+  margin-top: 10px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  background-color: #41c7ff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-pinned-btn:hover {
+  background-color: #1aa3dd;
+}
+
+/* Optional: drive list when adding pinned drives */
+.drive-list {
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.drive-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.drive-list button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Section pour les fichiers */
+.file-bar-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Carte dossier/fichier */
+.folder {
+  display: flex;
+  color: #000000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 8px;
+  gap: 8px;
+  width: 186px;
+  height: 231px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  text-align: center;
+}
+
+/* Icône du dossier */
+.folder-icon {
+  width: 100%;
+  height: 120px;
+  background-color: var(--folder-bg-color, #ffca28); /* couleur par défaut, mais tu peux la changer selon ton tag */
+  border-radius: 8px 8px 0 0; /* Coins arrondis pour un look plus moderne */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 -3px 5px rgba(0, 0, 0, 0.1); /* Ombre douce autour et à l'intérieur */
+  position: relative;
+  display: flex;
+  align-items: center; /* Centrer l'icône verticalement */
+  justify-content: center; /* Centrer l'icône horizontalement */
+  cursor: pointer; /* Change le curseur quand on passe la souris */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Ajoute une transition pour des effets de survol */
+}
+.folder-icon:hover {
+  transform: translateY(-5px); /* Déplace légèrement le dossier quand on survole */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), inset 0 -3px 5px rgba(0, 0, 0, 0.1); /* Ombre plus forte au survol */
+}
+.folder-icon svg {
+  width: 50px; /* Taille de l'icône */
+  height: 50px;
+  fill: white; /* Icône de couleur blanche */
+}
+.folder-icon .folder-name {
+  position: absolute;
+  bottom: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  width: 100%;
+}
+/* Nom du fichier */
+.folder-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 6px;
+  word-break: break-word;
+  padding: 0 5px;
+}
+
+/* Tags */
+.tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Boutons */
+.folder-buttons {
+  display: flex;
+  color: #ffffff;
+  gap: 8px;
+  justify-content: center;
+}
+
+.folder button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.folder button:hover {
+  background-color: #2980b9;
+}
+
+
+
