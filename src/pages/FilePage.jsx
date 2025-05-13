@@ -24,14 +24,11 @@ const FilePage = () => {
   const [selectedCategory, setSelectedCategory] = useState('Photos');
   const [pinnedDrives, setPinnedDrives] = useState([]);
   const [showDriveList, setShowDriveList] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState('/imageuser.png');
+  const [username, setUsername] = useState('Utilisateur'); 
 
-  const [driveName, setDriveName] = useState('');
-  const [password, setPassword] = useState('');
-  const [emails, setEmails] = useState('');
-  const [permission, setPermission] = useState('edit');
-  const [tagName, setTagName] = useState('');
-  const [tagColor, setTagColor] = useState('#ff0000');
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const handleDownload = (file) => console.log(`Downloading ${file.name}`);
+  const handleEdit = (file) => console.log(`Editing ${file.name}`);
 
   const handleUpload = (event) => {
     const file = event.target.files[0];
@@ -338,8 +335,8 @@ const FilePage = () => {
         <div className="user-info">
           <img src="/user-placeholder.jpg" alt="User" className="user-avatar" />
           <div className="user-details">
-            <div className="user-greeting">Bonjour, <strong>John Doe</strong></div>
-            <button className="profile-btn" onClick={() => navigate('/EditProfileForm')}>Profil</button>
+            <div className="user-greeting">Hi, <strong>John Doe</strong></div>
+            <button className="profile-btn" onClick={() => navigate('/EditProfileForm')}>Profile Settings</button>
           </div>
         </div>
         <div className="file-section01">

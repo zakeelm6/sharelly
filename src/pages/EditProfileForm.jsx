@@ -3,6 +3,7 @@ import './EditProfileForm.css';
 
 function EditProfileForm() {
   const [activeTab, setActiveTab] = useState('profile');
+  const [profilePhoto, setProfilePhoto] = useState('/imageuser.png');
 
   const [profile, setProfile] = useState({
     fullName: 'John Doe',
@@ -17,6 +18,14 @@ function EditProfileForm() {
     new: '',
     confirm: '',
   });
+
+  const handleProfilePhotoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfilePhoto(imageUrl);
+    }
+  };
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +66,26 @@ function EditProfileForm() {
       <div className="settings-main">
         {/* Sidebar */}
         <aside className="settings-sidebar">
-          <img src="/user-placeholder.jpg" alt="User" className="user-avatar" />
+        <label htmlFor="profile-upload" style={{ cursor: 'pointer' }}>
+                <img
+                  src={profilePhoto}
+                  className="user-avatar"
+                  style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+            
+                  }}
+                />
+         </label>
+              <input
+                type="file"
+                id="profile-upload"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleProfilePhotoChange}
+              />
           <div className="user-info">
             <p className="user-greeting">Hi, <strong>{profile.fullName}</strong></p>
             <p className="user-subtext">Profile Setting</p>
