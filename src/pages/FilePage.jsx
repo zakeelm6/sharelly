@@ -14,6 +14,15 @@ const FilePage = () => {
     { id: 3, name: 'Video 1', type: 'video', isOwner: false, permission: 'edit', tags: [] },
   ]);
 
+  // États manquants pour le formulaire de création de Drive
+  const [driveName, setDriveName] = useState('');
+  const [password, setPassword] = useState('');
+  const [emails, setEmails] = useState('');
+  const [permission, setPermission] = useState('edit');
+  const [tagName, setTagName] = useState('');
+  const [tagColor, setTagColor] = useState('#ff0000');
+  const [uploadedFile, setUploadedFile] = useState(null);
+
   const [tags, setTags] = useState([]);
   const [newTagName, setNewTagName] = useState('');
   const [newTagColor, setNewTagColor] = useState('#ff0000');
@@ -27,9 +36,26 @@ const FilePage = () => {
   const [profilePhoto, setProfilePhoto] = useState('/imageuser.png');
   const [username, setUsername] = useState('Utilisateur'); 
 
-  const handleDownload = (file) => console.log(`Downloading ${file.name}`);
-  const handleEdit = (file) => console.log(`Editing ${file.name}`);
+  // Gestion du téléchargement
+  const handleDownload = (file) => {
+    if (!file.downloadUrl) {
+      alert("Le fichier ne peut pas être téléchargé car l'URL est manquante.");
+      return;
+    }
+    const link = document.createElement('a');
+    link.href = file.downloadUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
+  // Navigation vers la page d'édition
+  const handleEdit = (file) => {
+    navigate(`/edit/${file.id}`);
+  };
+
+  // Gestion du téléchargement via input file
   const handleUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -37,6 +63,7 @@ const FilePage = () => {
     }
   };
 
+  // Création d'un nouveau Drive
   const handleCreateDrive = () => {
     if (!driveName || !password || !uploadedFile || !tagName) {
       alert("Veuillez remplir tous les champs et sélectionner un fichier.");
@@ -58,6 +85,7 @@ const FilePage = () => {
     setFiles([...files, newDrive]);
     setTags([...tags, tag]);
 
+    // Réinitialiser le formulaire
     setDriveName('');
     setPassword('');
     setEmails('');
@@ -68,6 +96,7 @@ const FilePage = () => {
     setShowCreateDrive(false);
   };
 
+  // Ajouter un nouveau tag
   const handleAddTag = () => {
     if (newTagName.trim() === '') return;
     const newTag = { name: newTagName.trim(), color: newTagColor };
@@ -75,24 +104,13 @@ const FilePage = () => {
     setNewTagName('');
   };
 
+  // Supprimer un fichier selon son index
   const removeFile = (indexToRemove) => {
     const updatedFiles = files.filter((_, index) => index !== indexToRemove);
     setFiles(updatedFiles);
   };
 
-  const handleDownload = (file) => {
-    const link = document.createElement('a');
-    link.href = file.downloadUrl;
-    link.download = file.name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const handleEdit = (file) => {
-    navigate(`/edit/${file.id}`);
-  };
-
+  // Modal pour créer un nouveau Drive
   const renderCreateDriveModal = () => (
     <div className="modal-overlay">
       <div className="modal">
@@ -158,6 +176,7 @@ const FilePage = () => {
     </div>
   );
 
+  // Contenu principal selon la section active
   const renderContent = () => {
     if (isStoragePage) {
       return (
@@ -194,9 +213,8 @@ const FilePage = () => {
     if (activeSection01 === 'myDrive') {
       return (
         <>
-                  
           <div className="top-bar">
-            <p class="styled-text">My Drive</p>
+            <p className="styled-text">My Drive</p>
             <div className="button-right-container">
               <button className="btn btn-blue" onClick={() => setShowCreateDrive(true)}>
                 Créer un Drive
@@ -227,7 +245,6 @@ const FilePage = () => {
             })}
           </div>
         </>
-        
       );
     }
 
@@ -241,6 +258,7 @@ const FilePage = () => {
     return <h2>{section01Titles[activeSection01] || "Bienvenue dans Sharely"}</h2>;
   };
 
+  // Filtrage des fichiers selon catégorie sélectionnée
   const filteredFiles = files.filter((file) => {
     if (selectedCategory === 'Photos') return file.type === 'image' || file.type === 'video';
     if (selectedCategory === 'Documents') return file.type === 'document';
@@ -273,8 +291,17 @@ const FilePage = () => {
           </div>
           <div className="section0101">
             <h4>Tags</h4>
-            <input type="text" placeholder="Nom du tag" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} />
-            <input type="color" value={newTagColor} onChange={(e) => setNewTagColor(e.target.value)} />
+            <input
+              type="text"
+              placeholder="Nom du tag"
+              value={newTagName}
+              onChange={(e) => setNewTagName(e.target.value)}
+            />
+            <input
+              type="color"
+              value={newTagColor}
+              onChange={(e) => setNewTagColor(e.target.value)}
+            />
             <button onClick={handleAddTag} className="menu-btn">Ajouter le tag</button>
             <ul className="menu-list">
               {tags.map((tag, index) => (
@@ -326,16 +353,16 @@ const FilePage = () => {
       </div>
 
       <div className="centre">
-        <h1 class='share'>My Sharely</h1>
+        <h1 className='share'>My Sharely</h1>
         {renderContent()}
         {showCreateDrive && renderCreateDriveModal()}
       </div>
 
       <div className="right">
         <div className="user-info">
-          <img src="/user-placeholder.jpg" alt="User" className="user-avatar" />
+          <img src={profilePhoto} alt="User" className="user-avatar" />
           <div className="user-details">
-            <div className="user-greeting">Hi, <strong>John Doe</strong></div>
+            <div className="user-greeting">Hi, <strong>{username}</strong></div>
             <button className="profile-btn" onClick={() => navigate('/EditProfileForm')}>Profile Settings</button>
           </div>
         </div>
@@ -370,18 +397,19 @@ const FilePage = () => {
               <li key={i}>📌 {file.name}</li>
             ))}
           </ul>
-          <button className="add-pinned-btn" onClick={() => setShowDriveList(!showDriveList)}>+ Ajouter un Drive</button>
+          <button className="menu-btn" onClick={() => setShowDriveList(!showDriveList)}>
+            {showDriveList ? 'Masquer les drives' : 'Afficher les drives'}
+          </button>
           {showDriveList && (
             <ul className="drive-list">
-              {files.map((file, index) => (
-                <li key={index} className="drive-item">
-                  {file.name}
-                  <button className="pin-btn" onClick={() => {
-                    if (!pinnedDrives.some(d => d.name === file.name)) {
+              {files.map((file, i) => (
+                <li key={i}>
+                  {file.name} 
+                  <button onClick={() => {
+                    if (!pinnedDrives.includes(file)) {
                       setPinnedDrives([...pinnedDrives, file]);
                     }
-                    setShowDriveList(false);
-                  }}>📌</button>
+                  }}>Épingler</button>
                 </li>
               ))}
             </ul>
